@@ -150,24 +150,28 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-    
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+// --- 1. 請刪除原本混亂的初始化，改用這段 ---
+// 刪除原本的 const app = initializeApp... 等行
 
-    const tasks = [
-        "基礎知識：能說出五種以上專業名詞或技法",
-        "課堂發言：主動提問兩次或回答老師提問",
-        "工具掌握：熟練且不看提示操作美髮工具",
-        "環境維護：徹底清理工作區域、工具與地面",
-        "觀察模仿：口述至少三個示範細節動作",
-        "有效溝通：條理清晰地說明遇到的困難",
-        "時間管理：在指定時間內有效率完成任務",
-        "自我評估：指出兩處優點與兩處改進點",
-        "團隊合作：主動與同學合作並提供協助",
-        "專業習慣：將好習慣持續融入每一堂課"
-    ];
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// --- 2. 確保 init() 函數被正確呼叫 ---
+// 關卡會由下面的 tasks 陣列自動產生
+const tasks = [
+    "基礎知識：能說出五種以上專業名詞或技法",
+    "課堂發言：主動提問兩次或回答老師提問",
+    "工具掌握：熟練且不看提示操作美髮工具",
+    "環境維護：徹底清理工作區域、工具與地面",
+    "觀察模仿：口述至少三個示範細節動作",
+    "有效溝通：條理清晰地說明遇到的困難",
+    "時間管理：在指定時間內有效率完成任務",
+    "自我評估：指出兩處優點與兩處改進點",
+    "團隊合作：主動與同學合作並提供協助",
+    "專業習慣：將好習慣持續融入每一堂課"
+];
+
+// ... 其餘 init() 與 updateStatus 的代碼 ...
 
     let scores = {};
 
@@ -226,4 +230,5 @@ const analytics = getAnalytics(app);
 </script>
 </body>
 </html>
+
 
