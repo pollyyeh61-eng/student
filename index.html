@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>尊爵黑金 | 美髮學員進度追蹤</title>
+    <title>Elite Stylist | 美髮學員進度</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold-dark: #8e6d13;
-            --gold-light: #d4af37;
+            --gold-main: #d4af37;
             --gold-bright: #f9f295;
             --bg-black: #0a0a0a;
             --card-bg: #1a1a1a;
@@ -25,241 +25,191 @@
             justify-content: center;
         }
 
-        .container {
-            width: 100%;
-            max-width: 500px; /* 優化手機寬度 */
-        }
+        .container { width: 100%; max-width: 450px; }
 
         h1 {
             text-align: center;
-            color: var(--gold-light);
+            color: var(--gold-main);
             font-weight: 300;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             text-transform: uppercase;
             border-bottom: 1px solid var(--gold-dark);
             padding-bottom: 15px;
-            margin-bottom: 25px;
+            margin: 20px 0 30px;
         }
 
-        /* 呼吸發光邊框效果 */
+        /* 呼吸發光邊框動畫 */
         @keyframes borderGlow {
             0%, 100% { border-color: var(--gold-dark); box-shadow: 0 0 5px rgba(142, 109, 19, 0.2); }
-            50% { border-color: var(--gold-light); box-shadow: 0 0 15px rgba(212, 175, 55, 0.5); }
+            50% { border-color: var(--gold-main); box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
         }
 
         .info-section, .card, #progressSummary {
             background: var(--card-bg);
             border: 1px solid var(--gold-dark);
-            border-radius: 12px;
+            border-radius: 15px;
             padding: 20px;
             margin-bottom: 20px;
-            animation: borderGlow 6s infinite ease-in-out;
+            animation: borderGlow 5s infinite ease-in-out;
         }
 
-        .info-row {
-            margin-bottom: 15px;
-        }
-
-        .info-row label {
-            display: block;
-            color: var(--text-gold);
-            font-size: 0.85rem;
-            margin-bottom: 5px;
-        }
-
+        .info-row { margin-bottom: 15px; }
+        .info-row label { display: block; color: var(--text-gold); font-size: 0.8rem; margin-bottom: 5px; }
         .info-row input {
-            width: 100%;
-            background: #222;
-            border: 1px solid #444;
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            box-sizing: border-box;
-            outline: none;
+            width: 100%; background: #222; border: 1px solid #444; color: white;
+            padding: 12px; border-radius: 8px; box-sizing: border-box; outline: none;
         }
 
-        .card h3 {
-            color: var(--gold-light);
-            margin-top: 0;
-            font-size: 1.1rem;
-        }
+        .card h3 { color: var(--gold-main); margin: 0 0 10px; font-size: 1.1rem; }
+        .card p { font-size: 0.9rem; color: #bbb; line-height: 1.6; margin-bottom: 15px; }
 
-        .card p {
-            font-size: 0.9rem;
-            color: #bbb;
-            line-height: 1.5;
-        }
-
-        /* 按鈕 4 秒金屬光澤週期 */
+        /* 按鈕 4 秒週期從暗金轉亮金動畫 */
         @keyframes goldCycle {
-            0%, 100% { background: var(--gold-dark); color: #000; }
-            50% { background: var(--gold-bright); color: #000; box-shadow: 0 0 10px var(--gold-bright); }
+            0%, 100% { background: var(--gold-dark); color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+            50% { background: var(--gold-bright); color: #000; box-shadow: 0 0 15px var(--gold-bright); }
         }
 
         .btn-gold {
-            width: 100%;
-            padding: 12px;
-            margin-top: 10px;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            text-transform: uppercase;
-            cursor: pointer;
+            width: 100%; padding: 14px; border: none; border-radius: 8px;
+            font-weight: bold; cursor: pointer;
             animation: goldCycle 4s infinite ease-in-out;
         }
 
-        .status-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
+        .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .status-btn {
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid #444;
-            background: #252525;
-            color: #888;
-            font-size: 0.8rem;
-            transition: 0.3s;
+            padding: 10px; border-radius: 8px; border: 1px solid #333;
+            background: #252525; color: #777; font-size: 0.85rem; transition: 0.3s;
         }
-
-        .status-btn.active-complete {
-            border-color: var(--gold-light);
-            color: var(--gold-light);
-            background: rgba(212, 175, 55, 0.1);
-        }
+        .status-btn.active { border-color: var(--gold-main); color: var(--gold-main); background: rgba(212,175,55,0.1); }
 
         textarea {
-            width: 100%;
-            background: #111;
-            border: 1px solid #333;
-            color: #ccc;
-            border-radius: 8px;
-            padding: 10px;
-            margin-top: 10px;
-            box-sizing: border-box;
+            width: 100%; background: #111; border: 1px solid #333; color: #ccc;
+            border-radius: 8px; padding: 10px; margin-top: 15px; box-sizing: border-box; resize: none;
         }
 
-        .footer-action {
-            position: sticky;
-            bottom: 20px;
-            display: flex;
-            gap: 10px;
-        }
+        .summary-item { display: flex; justify-content: space-between; margin-bottom: 8px; border-bottom: 1px dashed #333; padding-bottom: 5px; }
+        .val { color: var(--gold-main); font-weight: bold; }
 
+        .footer-action { position: sticky; bottom: 20px; display: flex; gap: 10px; z-index: 100; }
+        #clearBtn { background: #333; color: #888; border: 1px solid #444; animation: none; flex: 1; }
         #saveBtn { flex: 2; }
-        #clearBtn { 
-            flex: 1; 
-            background: #333; 
-            color: #888; 
-            border: 1px solid #444;
-            animation: none;
-        }
-
-        .highlight-gold { color: var(--gold-light); font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Elite Hair Stylist</h1>
+    <h1>ELITE STATUS</h1>
 
     <div class="info-section">
         <div class="info-row">
-            <label>學員姓名 Student Name</label>
-            <input type="text" id="studentName" placeholder="輸入姓名">
+            <label>學員姓名 NAME</label>
+            <input type="text" id="studentName" placeholder="輸入學員姓名...">
         </div>
         <div class="info-row">
-            <label>課程名稱 Course</label>
-            <input type="text" id="courseName" placeholder="輸入課程內容">
+            <label>課程名稱 COURSE</label>
+            <input type="text" id="courseName" placeholder="輸入目前課程...">
         </div>
     </div>
 
-    <div id="checkpoints">
-        <div class="card" data-id="1">
-            <h3>關卡 1：基礎知識的探索者</h3>
-            <p>任務：能說出或寫出五種以上今天所學的專業名詞或技法。</p>
-            <div class="status-grid">
-                <button class="status-btn" id="btn-1-incomplete" onclick="setStatus(1, '未完成')">未完成</button>
-                <button class="status-btn" id="btn-1-complete" onclick="setStatus(1, '已完成')">已完成</button>
-            </div>
-            <textarea id="comment1" placeholder="留給未來的自己一些評語..."></textarea>
-        </div>
-        </div>
+    <div id="cardsContainer"></div>
 
     <div id="progressSummary">
-        <h3 style="text-align: center;">進度摘要 Report</h3>
-        <p>學員：<span id="summaryName" class="highlight-gold">-</span></p>
-        <p>進度：<span id="progressText" class="highlight-gold">0/10</span></p>
+        <h3 style="text-align:center; font-size: 0.9rem; letter-spacing: 2px;">實時摘要 SUMMARY</h3>
+        <div class="summary-item"><span>學員姓名</span><span id="sumName" class="val">-</span></div>
+        <div class="summary-item"><span>完成進度</span><span id="sumProgress" class="val">0 / 10</span></div>
     </div>
 
     <div class="footer-action">
-        <button id="clearBtn" class="status-btn" onclick="clearData()">還原</button>
-        <button id="saveBtn" class="btn-gold" onclick="saveToFirebase()">儲存雲端進度</button>
+        <button id="clearBtn" class="status-btn" onclick="resetForm()">重置</button>
+        <button id="saveBtn" class="btn-gold" onclick="saveToFirebase()">儲存至雲端</button>
     </div>
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
 
 <script>
-    // --- Firebase 配置 (請替換為你的 Firebase Console 資訊) ---
+    // --- 請填入你的 Firebase 配置 ---
     const firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
-        authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-        databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_PROJECT_ID.appspot.com",
-        messagingSenderId: "YOUR_ID",
-        appId: "YOUR_APP_ID"
+        apiKey: "你的API_KEY",
+        authDomain: "你的專案ID.firebaseapp.com",
+        databaseURL: "https://你的專案ID-default-rtdb.firebaseio.com",
+        projectId: "你的專案ID",
+        storageBucket: "你的專案ID.appspot.com",
+        messagingSenderId: "你的傳送ID",
+        appId: "你的APP_ID"
     };
     
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    let checkpointStatus = {};
+    const tasks = [
+        "基礎知識：能說出五種以上專業名詞或技法",
+        "課堂發言：主動提問兩次或回答老師提問",
+        "工具掌握：熟練且不看提示操作美髮工具",
+        "環境維護：徹底清理工作區域、工具與地面",
+        "觀察模仿：口述至少三個示範細節動作",
+        "有效溝通：條理清晰地說明遇到的困難",
+        "時間管理：在指定時間內有效率完成任務",
+        "自我評估：指出兩處優點與兩處改進點",
+        "團隊合作：主動與同學合作並提供協助",
+        "專業習慣：將好習慣持續融入每一堂課"
+    ];
 
-    function setStatus(id, status) {
-        if(!checkpointStatus[id]) checkpointStatus[id] = {};
-        checkpointStatus[id].status = status;
-        
-        // 更新 UI
-        document.getElementById(`btn-${id}-incomplete`).classList.toggle('active-complete', status === '未完成');
-        document.getElementById(`btn-${id}-complete`).classList.toggle('active-complete', status === '已完成');
-        updateSummary();
+    let scores = {};
+
+    function init() {
+        const container = document.getElementById('cardsContainer');
+        tasks.forEach((task, i) => {
+            const id = i + 1;
+            scores[id] = { status: '未完成', comment: '' };
+            container.innerHTML += `
+                <div class="card">
+                    <h3>關卡 ${id}</h3>
+                    <p>${task}</p>
+                    <div class="status-grid">
+                        <button class="status-btn" id="inc-${id}" onclick="updateStatus(${id}, '未完成')">未完成</button>
+                        <button class="status-btn" id="com-${id}" onclick="updateStatus(${id}, '已完成')">已完成</button>
+                    </div>
+                    <textarea id="msg-${id}" placeholder="心得備註..." oninput="updateComment(${id})"></textarea>
+                </div>`;
+        });
+        document.getElementById('studentName').addEventListener('input', e => {
+            document.getElementById('sumName').innerText = e.target.value || '-';
+        });
     }
 
-    function updateSummary() {
-        const name = document.getElementById('studentName').value;
-        let completed = 0;
-        for(let i in checkpointStatus) {
-            if(checkpointStatus[i].status === '已完成') completed++;
-        }
-        document.getElementById('summaryName').innerText = name || '-';
-        document.getElementById('progressText').innerText = `${completed}/10`;
+    function updateStatus(id, status) {
+        scores[id].status = status;
+        document.getElementById(`inc-${id}`).classList.toggle('active', status === '未完成');
+        document.getElementById(`com-${id}`).classList.toggle('active', status === '已完成');
+        renderSummary();
+    }
+
+    function updateComment(id) {
+        scores[id].comment = document.getElementById(`msg-${id}`).value;
+    }
+
+    function renderSummary() {
+        const done = Object.values(scores).filter(s => s.status === '已完成').length;
+        document.getElementById('sumProgress').innerText = `${done} / 10`;
     }
 
     function saveToFirebase() {
         const name = document.getElementById('studentName').value;
-        if(!name) return alert('請輸入姓名以利雲端備份');
-
-        const data = {
+        if (!name) return alert("請輸入學員姓名以進行存檔");
+        
+        db.ref('students/' + name).set({
             name: name,
             course: document.getElementById('courseName').value,
-            progress: checkpointStatus,
-            lastUpdated: new Date().toISOString()
-        };
-
-        db.ref('students/' + name).set(data)
-          .then(() => alert('雲端儲存成功！'))
-          .catch(err => alert('失敗：' + err.message));
+            data: scores,
+            time: new Date().toLocaleString()
+        }).then(() => alert("✨ 奢華成就已同步至雲端 ✨"));
     }
 
-    function clearData() {
-        if(confirm('確定清除嗎？')) location.reload();
-    }
+    function resetForm() { if(confirm("確定要清除所有內容嗎？")) location.reload(); }
+
+    init();
 </script>
 </body>
 </html>
