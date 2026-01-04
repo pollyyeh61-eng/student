@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Elite Stylist | 美髮學員進度</title>
+    <title>Elite Stylist | 美髮學員 10 大關卡</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -60,39 +60,51 @@
             padding: 12px; border-radius: 8px; box-sizing: border-box; outline: none;
         }
 
-        .card h3 { color: var(--gold-main); margin: 0 0 10px; font-size: 1.1rem; }
+        .card h3 { color: var(--gold-main); margin: 0 0 10px; font-size: 1.1rem; border-left: 4px solid var(--gold-main); padding-left: 10px; }
         .card p { font-size: 0.9rem; color: #bbb; line-height: 1.6; margin-bottom: 15px; }
 
-        /* 按鈕 4 秒週期從暗金轉亮金動畫 */
+        /* 按鈕週期發光動畫 */
         @keyframes goldCycle {
-            0%, 100% { background: var(--gold-dark); color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+            0%, 100% { background: var(--gold-dark); color: #fff; }
             50% { background: var(--gold-bright); color: #000; box-shadow: 0 0 15px var(--gold-bright); }
         }
 
-        .btn-gold {
+        .btn-gold-save {
             width: 100%; padding: 14px; border: none; border-radius: 8px;
             font-weight: bold; cursor: pointer;
             animation: goldCycle 4s infinite ease-in-out;
         }
 
-        .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .status-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
         .status-btn {
-            padding: 10px; border-radius: 8px; border: 1px solid #333;
-            background: #252525; color: #777; font-size: 0.85rem; transition: 0.3s;
+            padding: 10px 5px; border-radius: 6px; border: 1px solid #333;
+            background: #252525; color: #777; font-size: 0.8rem; transition: 0.3s; cursor: pointer;
+            text-align: center;
         }
-        .status-btn.active { border-color: var(--gold-main); color: var(--gold-main); background: rgba(212,175,55,0.1); }
+        .status-btn.active-inc { border-color: #ff6347; color: #ff6347; background: rgba(255, 99, 71, 0.1); }
+        .status-btn.active-com { border-color: #3cb371; color: #3cb371; background: rgba(60, 179, 113, 0.1); }
+        .status-btn.comment-toggle { border-color: var(--text-gold); color: var(--text-gold); }
 
         textarea {
             width: 100%; background: #111; border: 1px solid #333; color: #ccc;
-            border-radius: 8px; padding: 10px; margin-top: 15px; box-sizing: border-box; resize: none;
+            border-radius: 8px; padding: 10px; margin-top: 10px; box-sizing: border-box; 
+            display: none; font-size: 0.85rem; height: 80px;
+        }
+
+        /* 進度條樣式 */
+        .progress-bar-container {
+            width: 100%; height: 10px; background: #333; border-radius: 5px; margin: 15px 0; overflow: hidden;
+        }
+        .progress-bar-fill {
+            width: 0%; height: 100%; background: linear-gradient(90deg, var(--gold-dark), var(--gold-bright));
+            transition: width 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .summary-item { display: flex; justify-content: space-between; margin-bottom: 8px; border-bottom: 1px dashed #333; padding-bottom: 5px; }
         .val { color: var(--gold-main); font-weight: bold; }
-
-        .footer-action { position: sticky; bottom: 20px; display: flex; gap: 10px; z-index: 100; }
-        #clearBtn { background: #333; color: #888; border: 1px solid #444; animation: none; flex: 1; }
-        #saveBtn { flex: 2; }
+        .footer-action { position: sticky; bottom: 20px; display: flex; gap: 10px; z-index: 100; padding-top: 10px; background: rgba(10,10,10,0.8); }
+        #clearBtn { background: #333; color: #888; border: 1px solid #444; flex: 1; height: 50px; border-radius: 8px; cursor: pointer; }
+        #saveBtn { flex: 2; height: 50px; }
     </style>
 </head>
 <body>
@@ -107,7 +119,7 @@
         </div>
         <div class="info-row">
             <label>課程名稱 COURSE</label>
-            <input type="text" id="courseName" placeholder="輸入目前課程...">
+            <input type="text" id="courseName" placeholder="輸入課程內容...">
         </div>
     </div>
 
@@ -115,13 +127,16 @@
 
     <div id="progressSummary">
         <h3 style="text-align:center; font-size: 0.9rem; letter-spacing: 2px;">實時摘要 SUMMARY</h3>
+        <div class="progress-bar-container">
+            <div id="mainProgressBar" class="progress-bar-fill"></div>
+        </div>
         <div class="summary-item"><span>學員姓名</span><span id="sumName" class="val">-</span></div>
-        <div class="summary-item"><span>完成進度</span><span id="sumProgress" class="val">0 / 10</span></div>
+        <div class="summary-item"><span>完成度</span><span id="sumProgress" class="val">0 / 10</span></div>
     </div>
 
     <div class="footer-action">
-        <button id="clearBtn" class="status-btn" onclick="resetForm()">重置</button>
-        <button id="saveBtn" class="btn-gold" onclick="saveToFirebase()">儲存至雲端</button>
+        <button id="clearBtn" onclick="resetForm()">還原重置</button>
+        <button id="saveBtn" class="btn-gold-save" onclick="saveToFirebase()">儲存至雲端系統</button>
     </div>
 </div>
 
@@ -129,52 +144,38 @@
 <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
 
 <script>
-    // --- 請填入你的 Firebase 配置 ---
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+    // 使用您提供的 Firebase Config
+    const firebaseConfig = {
+        apiKey: "AIzaSyCOhBN9TH3UJSOSx5XVyQ08f_2RUckvXYU",
+        authDomain: "holyhairsalon-f73bf.firebaseapp.com",
+        databaseURL: "https://holyhairsalon-f73bf-default-rtdb.firebaseio.com",
+        projectId: "holyhairsalon-f73bf",
+        storageBucket: "holyhairsalon-f73bf.firebasestorage.app",
+        messagingSenderId: "960169055224",
+        appId: "1:960169055224:web:48af64a6cf215650bf3c0d"
+    };
+    
+    // 初始化 Firebase (Compat 寫法)
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyCOhBN9TH3UJSOSx5XVyQ08f_2RUckvXYU",
-  authDomain: "holyhairsalon-f73bf.firebaseapp.com",
-  databaseURL: "https://holyhairsalon-f73bf-default-rtdb.firebaseio.com",
-  projectId: "holyhairsalon-f73bf",
-  storageBucket: "holyhairsalon-f73bf.firebasestorage.app",
-  messagingSenderId: "960169055224",
-  appId: "1:960169055224:web:48af64a6cf215650bf3c0d",
-  measurementId: "G-QGWQVMD6C6"
-};
-
-// Initialize Firebase
-// --- 1. 請刪除原本混亂的初始化，改用這段 ---
-// 刪除原本的 const app = initializeApp... 等行
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-
-// --- 2. 確保 init() 函數被正確呼叫 ---
-// 關卡會由下面的 tasks 陣列自動產生
-const tasks = [
-    "基礎知識：能說出五種以上專業名詞或技法",
-    "課堂發言：主動提問兩次或回答老師提問",
-    "工具掌握：熟練且不看提示操作美髮工具",
-    "環境維護：徹底清理工作區域、工具與地面",
-    "觀察模仿：口述至少三個示範細節動作",
-    "有效溝通：條理清晰地說明遇到的困難",
-    "時間管理：在指定時間內有效率完成任務",
-    "自我評估：指出兩處優點與兩處改進點",
-    "團隊合作：主動與同學合作並提供協助",
-    "專業習慣：將好習慣持續融入每一堂課"
-];
-
-// ... 其餘 init() 與 updateStatus 的代碼 ...
+    // 10 個核心關卡
+    const tasks = [
+        { title: "關卡 1：基礎知識探索者", desc: "任務：能說出或寫出五種以上今天所學的專業名詞或技法。" },
+        { title: "關卡 2：課堂上的發言者", desc: "任務：在課程進行中，至少主動提問兩次，或回答老師提問。" },
+        { title: "關卡 3：美髮工具掌握者", desc: "任務：熟練且不看提示地正確操作美髮工具。" },
+        { title: "關卡 4：乾淨環境維護者", desc: "任務：主動且徹底地清理工作區域、工具與地面。" },
+        { title: "關卡 5：觀察與模仿實踐家", desc: "任務：專注觀察示範，並口述出至少三個細節技巧。" },
+        { title: "關卡 6：有效溝通練習者", desc: "任務：清楚且有條理地向老師說明你遇到的困難。" },
+        { title: "關卡 7：時間管理達人", desc: "任務：在指定實作時間內有效率完成任務，不拖延。" },
+        { title: "關卡 8：自我評估審視者", desc: "任務：指出作品中至少兩處優點與兩處需改進的地方。" },
+        { title: "關卡 9：團隊合作助攻者", desc: "任務：在課堂上主動與同學合作、提供協助。" },
+        { title: "關卡 10：專業習慣養成者", desc: "任務：持續且不間斷地將好習慣融入每一堂課。" }
+    ];
 
     let scores = {};
 
+    // 介面初始化
     function init() {
         const container = document.getElementById('cardsContainer');
         tasks.forEach((task, i) => {
@@ -182,24 +183,34 @@ const tasks = [
             scores[id] = { status: '未完成', comment: '' };
             container.innerHTML += `
                 <div class="card">
-                    <h3>關卡 ${id}</h3>
-                    <p>${task}</p>
+                    <h3>${task.title}</h3>
+                    <p>${task.desc}</p>
                     <div class="status-grid">
                         <button class="status-btn" id="inc-${id}" onclick="updateStatus(${id}, '未完成')">未完成</button>
                         <button class="status-btn" id="com-${id}" onclick="updateStatus(${id}, '已完成')">已完成</button>
+                        <button class="status-btn comment-toggle" onclick="toggleMsg(${id})">留言區</button>
                     </div>
-                    <textarea id="msg-${id}" placeholder="心得備註..." oninput="updateComment(${id})"></textarea>
+                    <textarea id="msg-${id}" placeholder="請輸入評語或心得..." oninput="updateComment(${id})"></textarea>
                 </div>`;
+            // 初始化按鈕外觀
+            setTimeout(() => updateStatus(id, '未完成'), 10);
         });
+        
         document.getElementById('studentName').addEventListener('input', e => {
             document.getElementById('sumName').innerText = e.target.value || '-';
         });
     }
 
+    function toggleMsg(id) {
+        const el = document.getElementById(`msg-${id}`);
+        el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+    }
+
     function updateStatus(id, status) {
         scores[id].status = status;
-        document.getElementById(`inc-${id}`).classList.toggle('active', status === '未完成');
-        document.getElementById(`com-${id}`).classList.toggle('active', status === '已完成');
+        // 切換按鈕樣式
+        document.getElementById(`inc-${id}`).classList.toggle('active-inc', status === '未完成');
+        document.getElementById(`com-${id}`).classList.toggle('active-com', status === '已完成');
         renderSummary();
     }
 
@@ -210,25 +221,30 @@ const tasks = [
     function renderSummary() {
         const done = Object.values(scores).filter(s => s.status === '已完成').length;
         document.getElementById('sumProgress').innerText = `${done} / 10`;
+        const percent = (done / 10) * 100;
+        document.getElementById('mainProgressBar').style.width = percent + '%';
     }
 
     function saveToFirebase() {
         const name = document.getElementById('studentName').value;
-        if (!name) return alert("請輸入學員姓名以進行存檔");
+        if (!name || name === "請輸入姓名") return alert("請輸入有效的學員姓名以利存檔");
         
         db.ref('students/' + name).set({
             name: name,
             course: document.getElementById('courseName').value,
             data: scores,
-            time: new Date().toLocaleString()
-        }).then(() => alert("✨ 奢華成就已同步至雲端 ✨"));
+            lastUpdate: new Date().toLocaleString()
+        }).then(() => {
+            alert("✨ 雲端儲存成功！✨");
+        }).catch(err => alert("儲存失敗: " + err.message));
     }
 
-    function resetForm() { if(confirm("確定要清除所有內容嗎？")) location.reload(); }
+    function resetForm() {
+        if(confirm("確定要還原重置所有進度嗎？")) location.reload();
+    }
 
-    init();
+    // 啟動程式
+    window.onload = init;
 </script>
 </body>
 </html>
-
-
