@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Elite Stylist | 奢華美髮管理系統</title>
+    <title>Elite Stylist | 管理系統</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -15,140 +15,97 @@
             --glass-border: rgba(212, 175, 55, 0.3);
         }
 
-        body {
-            font-family: 'Noto Sans TC', sans-serif;
-            background: radial-gradient(circle at top, #1a1a1a 0%, #050505 100%);
-            color: #e0e0e0;
-            margin: 0;
-            padding: 15px;
-            display: flex;
-            justify-content: center;
-        }
-
+        body { font-family: 'Noto Sans TC', sans-serif; background: radial-gradient(circle at top, #1a1a1a 0%, #050505 100%); color: #e0e0e0; margin: 0; padding: 15px; display: flex; justify-content: center; min-height: 100vh; }
         .container { width: 100%; max-width: 480px; }
 
-        /* 金屬質感標題 */
-        h1 {
-            text-align: center;
-            font-family: 'Noto Serif TC', serif;
-            background: linear-gradient(to bottom, var(--gold-bright) 0%, var(--gold-main) 50%, var(--gold-dark) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 700;
-            letter-spacing: 6px;
-            margin: 30px 0;
-            filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.5));
-        }
+        /* 導航列 */
+        .nav-tabs { display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; border-bottom: 1px solid #222; }
+        .nav-btn { background: none; border: none; color: #555; font-size: 0.9rem; cursor: pointer; padding: 12px; transition: 0.3s; letter-spacing: 2px; }
+        .nav-btn.active { color: var(--gold-main); border-bottom: 2px solid var(--gold-main); font-weight: bold; }
 
-        /* 呼吸發光與毛玻璃效果 */
-        @keyframes borderGlow {
-            0%, 100% { border-color: var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-            50% { border-color: var(--gold-main); box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); }
-        }
+        h1 { text-align: center; font-family: 'Noto Serif TC', serif; background: linear-gradient(to bottom, var(--gold-bright) 0%, var(--gold-main) 50%, var(--gold-dark) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700; letter-spacing: 4px; margin: 15px 0; filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.3)); }
 
-        .glass-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 25px;
-            animation: borderGlow 6s infinite ease-in-out;
-        }
+        .glass-card { background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px; margin-bottom: 20px; }
 
-        .info-row label { color: var(--gold-main); font-size: 0.75rem; letter-spacing: 1px; display: block; margin-bottom: 8px; }
-        .info-row input {
-            width: 100%; background: rgba(0,0,0,0.3); border: 1px solid #444; color: #fff;
-            padding: 14px; border-radius: 12px; margin-bottom: 15px; box-sizing: border-box; outline: none;
-            transition: 0.3s;
-        }
-        .info-row input:focus { border-color: var(--gold-main); background: rgba(0,0,0,0.5); }
+        /* 密碼鎖定層 */
+        #passwordLayer { text-align: center; padding: 40px 20px; }
+        .pw-input { background: #000; border: 1px solid var(--gold-dark); color: var(--gold-bright); font-size: 1.5rem; text-align: center; width: 150px; padding: 10px; border-radius: 10px; letter-spacing: 5px; margin: 20px 0; outline: none; }
+        .unlock-btn { background: var(--gold-main); color: #000; border: none; padding: 10px 30px; border-radius: 8px; font-weight: bold; cursor: pointer; }
 
-        .card h3 { color: var(--gold-main); margin: 0 0 12px; font-size: 1.1rem; display: flex; align-items: center; }
-        .card h3::before { content: ''; width: 4px; height: 18px; background: var(--gold-main); margin-right: 12px; border-radius: 2px; }
-        .card p { font-size: 0.9rem; color: #aaa; line-height: 1.7; margin-bottom: 20px; }
-
-        /* 三鍵狀態切換 */
-        .status-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-        .status-btn {
-            padding: 12px 5px; border-radius: 10px; border: 1px solid #333;
-            background: #1a1a1a; color: #666; font-size: 0.8rem; cursor: pointer; transition: 0.4s;
-        }
+        /* 學員端樣式 */
+        .info-row label { color: var(--gold-main); font-size: 0.75rem; display: block; margin-bottom: 5px; }
+        .info-row input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid #444; color: #fff; padding: 12px; border-radius: 10px; margin-bottom: 12px; box-sizing: border-box; outline: none; }
+        .status-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+        .status-btn { padding: 10px 5px; border-radius: 8px; border: 1px solid #333; background: #1a1a1a; color: #666; font-size: 0.75rem; cursor: pointer; }
+        .status-btn.active-com { border-color: #5cb85c; color: #5cb85c; background: rgba(92, 184, 92, 0.1); }
         .status-btn.active-inc { border-color: #d9534f; color: #d9534f; background: rgba(217, 83, 79, 0.1); }
-        .status-btn.active-com { border-color: #5cb85c; color: #5cb85c; background: rgba(92, 184, 92, 0.1); box-shadow: 0 0 10px rgba(92, 184, 92, 0.2); }
-        .status-btn.comment-toggle { border-color: #777; color: #ccc; }
-        .status-btn.has-comment { border-color: var(--gold-main); color: var(--gold-main); }
+        textarea { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid #444; color: #eee; border-radius: 10px; padding: 10px; margin-top: 10px; box-sizing: border-box; display: none; height: 80px; resize: none; font-size: 0.85rem; }
 
-        textarea {
-            width: 100%; background: rgba(0,0,0,0.4); border: 1px solid #444; color: #eee;
-            border-radius: 12px; padding: 12px; margin-top: 15px; box-sizing: border-box;
-            display: none; font-size: 0.85rem; height: 90px; resize: none;
-        }
+        /* 進度條 */
+        .progress-bg { width: 100%; height: 8px; background: #111; border-radius: 10px; overflow: hidden; margin: 10px 0; }
+        .progress-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--gold-dark), var(--gold-bright)); transition: width 0.8s ease; }
 
-        /* 奢華進度條 */
-        .progress-container { margin: 20px 0; }
-        .progress-bg { width: 100%; height: 12px; background: #111; border-radius: 10px; border: 1px solid #333; overflow: hidden; }
-        .progress-fill {
-            width: 0%; height: 100%;
-            background: linear-gradient(90deg, var(--gold-dark), var(--gold-bright), var(--gold-dark));
-            background-size: 200% 100%;
-            animation: shine 3s infinite linear;
-            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        @keyframes shine { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        /* 導師清單 */
+        .student-list-card { border-bottom: 1px solid #333; padding: 15px 0; margin-bottom: 10px; }
+        .student-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .student-name { font-size: 1.1rem; color: var(--gold-main); font-weight: bold; }
+        .course-tag { font-size: 0.7rem; color: #888; border: 1px solid #444; padding: 2px 6px; border-radius: 4px; }
+        .task-dots { display: flex; gap: 4px; margin-top: 8px; }
+        .dot { width: 6px; height: 6px; border-radius: 50%; background: #222; border: 1px solid #444; }
+        .dot.done { background: var(--gold-main); box-shadow: 0 0 5px var(--gold-main); border: none; }
+        .mentor-comments { font-size: 0.8rem; color: #aaa; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-top: 10px; line-height: 1.5; }
+        .q-tag { color: var(--gold-dark); font-weight: bold; margin-right: 5px; }
 
-        .summary-row { display: flex; justify-content: space-between; margin-top: 10px; font-size: 0.9rem; }
-        .val { color: var(--gold-main); font-weight: bold; font-family: 'Noto Serif TC'; }
-
-        /* 懸浮按鈕欄 */
-        .footer-action {
-            position: sticky; bottom: 20px; display: flex; gap: 12px; padding: 15px 0;
-            background: rgba(5,5,5,0.8); backdrop-filter: blur(5px); z-index: 100;
-        }
-        #clearBtn { background: #222; color: #888; border: 1px solid #333; flex: 1; border-radius: 12px; height: 55px; cursor: pointer; }
-        
-        #saveBtn {
-            flex: 2; height: 55px; border: none; border-radius: 12px; font-weight: 700; cursor: pointer;
-            background: linear-gradient(45deg, var(--gold-dark), var(--gold-bright), var(--gold-dark));
-            background-size: 200% auto;
-            color: #000; transition: 0.5s;
-            animation: goldFlow 4s infinite linear;
-        }
-        @keyframes goldFlow { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
-
-        .hint { text-align: center; font-size: 0.7rem; color: #555; margin-top: 10px; }
+        /* 底部按鈕 */
+        .footer-action { position: sticky; bottom: 20px; display: flex; gap: 10px; padding: 15px 0; background: rgba(5,5,5,0.8); backdrop-filter: blur(5px); z-index: 100; }
+        #saveBtn { flex: 1; height: 50px; border: none; border-radius: 12px; font-weight: bold; background: linear-gradient(45deg, var(--gold-dark), var(--gold-bright)); color: #000; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="container">
+    <div class="nav-tabs">
+        <button class="nav-btn active" id="tabStudent" onclick="switchView('student')">學員模式</button>
+        <button class="nav-btn" id="tabMentor" onclick="switchView('mentor')">導師管理</button>
+    </div>
+
     <h1>ELITE STATUS</h1>
 
-    <div class="glass-card">
-        <div class="info-row">
-            <label>STUDENT NAME</label>
-            <input type="text" id="studentName" placeholder="點擊輸入學員姓名...">
-            <label>CURRENT COURSE</label>
-            <input type="text" id="courseName" placeholder="點擊輸入目前課程...">
+    <div id="studentView">
+        <div class="glass-card">
+            <div class="info-row">
+                <label>STUDENT NAME</label>
+                <input type="text" id="studentName" placeholder="請輸入姓名...">
+                <label>COURSE</label>
+                <input type="text" id="courseName" placeholder="輸入目前課程...">
+            </div>
         </div>
-    </div>
-
-    <div id="cardsContainer"></div>
-
-    <div class="glass-card" id="progressSummary">
-        <h3 style="justify-content: center; border: none;">REAL-TIME SUMMARY</h3>
-        <div class="progress-container">
+        <div id="cardsContainer"></div>
+        <div class="glass-card">
+            <h3 style="color:var(--gold-main); font-size:0.8rem; text-align:center; letter-spacing:2px;">PROGRESS SUMMARY</h3>
             <div class="progress-bg"><div id="mainProgressBar" class="progress-fill"></div></div>
+            <p style="text-align:right; font-size:0.8rem; margin:0;" id="sumProgress">0 / 10</p>
         </div>
-        <div class="summary-row"><span>學員姓名</span><span id="sumName" class="val">-</span></div>
-        <div class="summary-row"><span>總體進度</span><span id="sumProgress" class="val">0 / 10</span></div>
+        <div class="footer-action">
+            <button id="saveBtn" onclick="saveToFirebase()">同步至雲端系統</button>
+        </div>
     </div>
 
-    <div class="footer-action">
-        <button id="clearBtn" onclick="resetForm()">重置進度</button>
-        <button id="saveBtn" onclick="saveToFirebase()">同步雲端系統</button>
+    <div id="mentorView" style="display:none;">
+        <div id="passwordLayer" class="glass-card">
+            <p style="color:var(--gold-main)">請輸入管理密碼</p>
+            <input type="password" id="mentorPassword" class="pw-input" maxlength="4" placeholder="****">
+            <br>
+            <button class="unlock-btn" onclick="verifyPassword()">解鎖管理介面</button>
+        </div>
+
+        <div id="mentorContent" style="display:none;">
+            <div class="glass-card">
+                <div id="mentorList">正在同步資料庫...</div>
+            </div>
+            <button onclick="fetchMentorData()" style="width:100%; background:none; border:1px solid var(--gold-dark); color:var(--gold-main); padding:12px; border-radius:10px; margin-bottom:50px;">重新整理清單</button>
+        </div>
     </div>
-    <p class="hint">系統會自動保留您的手機編輯紀錄</p>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
@@ -164,123 +121,155 @@
         messagingSenderId: "960169055224",
         appId: "1:960169055224:web:48af64a6cf215650bf3c0d"
     };
-    
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
     const tasks = [
-        { title: "關卡 1：基礎知識探索者", desc: "任務：能說出或寫出五種以上今天所學的專業名詞或技法。" },
-        { title: "關卡 2：課堂上的發言者", desc: "任務：在課程進行中，至少主動提問兩次，或回答老師提問。" },
-        { title: "關卡 3：美髮工具掌握者", desc: "任務：熟練且不看提示地正確操作美髮工具。" },
-        { title: "關卡 4：乾淨環境維護者", desc: "任務：主動且徹底地清理工作區域、工具與地面。" },
-        { title: "關卡 5：觀察與模仿實踐家", desc: "任務：專注觀察示範，並口述出至少三個細節技巧。" },
-        { title: "關卡 6：有效溝通練習者", desc: "任務：清楚且有條理地向老師說明你遇到的困難。" },
-        { title: "關卡 7：時間管理達人", desc: "任務：在指定實作時間內有效率完成任務，不拖延。" },
-        { title: "關卡 8：自我評估審視者", desc: "任務：指出作品中至少兩處優點與兩處需改進的地方。" },
-        { title: "關卡 9：團隊合作助攻者", desc: "任務：在課堂上主動與同學合作、提供協助。" },
-        { title: "關卡 10：專業習慣養成者", desc: "任務：持續且不間斷地將好習慣融入每一堂課。" }
+        "基礎知識探索者", "課堂上的發言者", "美髮工具掌握者", "乾淨環境維護者", "觀察與模仿實踐家",
+        "有效溝通練習者", "時間管理達人", "自我評估審視者", "團隊合作助攻者", "專業習慣養成者"
     ];
 
     let scores = {};
+    let isMentorUnlocked = false;
 
-    function init() {
-        // 從手機 LocalStorage 讀取
+    // --- 切換邏輯 ---
+    function switchView(view) {
+        document.getElementById('studentView').style.display = view === 'student' ? 'block' : 'none';
+        document.getElementById('mentorView').style.display = view === 'mentor' ? 'block' : 'none';
+        document.getElementById('tabStudent').classList.toggle('active', view === 'student');
+        document.getElementById('tabMentor').classList.toggle('active', view === 'mentor');
+
+        if(view === 'mentor' && isMentorUnlocked) {
+            fetchMentorData();
+        } else if(view === 'mentor') {
+            document.getElementById('passwordLayer').style.display = 'block';
+            document.getElementById('mentorContent').style.display = 'none';
+        }
+    }
+
+    // --- 密碼驗證 ---
+    function verifyPassword() {
+        const pw = document.getElementById('mentorPassword').value;
+        if(pw === "0000") {
+            isMentorUnlocked = true;
+            document.getElementById('passwordLayer').style.display = 'none';
+            document.getElementById('mentorContent').style.display = 'block';
+            fetchMentorData();
+        } else {
+            alert("密碼錯誤，請重新輸入");
+            document.getElementById('mentorPassword').value = "";
+        }
+    }
+
+    // --- 學員邏輯 ---
+    function initStudent() {
         const local = JSON.parse(localStorage.getItem('elite_salon_data')) || {};
-        
         document.getElementById('studentName').value = local.name || "";
         document.getElementById('courseName').value = local.course || "";
-        document.getElementById('sumName').innerText = local.name || "-";
-
         const container = document.getElementById('cardsContainer');
+        container.innerHTML = "";
         tasks.forEach((task, i) => {
             const id = i + 1;
-            const saved = local.data ? local.data[id] : null;
-            scores[id] = saved || { status: '未完成', comment: '' };
-
+            scores[id] = (local.data && local.data[id]) ? local.data[id] : { status: '未完成', comment: '' };
             container.innerHTML += `
-                <div class="glass-card card">
-                    <h3>${task.title}</h3>
-                    <p>${task.desc}</p>
+                <div class="glass-card">
+                    <h3 style="font-size:0.95rem; color:var(--gold-main); margin-bottom:15px;">關卡 ${id}: ${task}</h3>
                     <div class="status-grid">
                         <button class="status-btn" id="inc-${id}" onclick="updateStatus(${id}, '未完成')">未完成</button>
                         <button class="status-btn" id="com-${id}" onclick="updateStatus(${id}, '已完成')">已完成</button>
-                        <button class="status-btn comment-toggle" id="tog-${id}" onclick="toggleMsg(${id})">留言區</button>
+                        <button class="status-btn" id="tog-${id}" onclick="toggleMsg(${id})">留言</button>
                     </div>
-                    <textarea id="msg-${id}" placeholder="在此輸入心得或評語..." oninput="updateComment(${id})">${scores[id].comment}</textarea>
+                    <textarea id="msg-${id}" oninput="updateComment(${id})">${scores[id].comment}</textarea>
                 </div>`;
-            
             setTimeout(() => {
-                applyStatusUI(id, scores[id].status);
-                if(scores[id].comment) document.getElementById(`tog-${id}`).classList.add('has-comment');
+                document.getElementById(`inc-${id}`).classList.toggle('active-inc', scores[id].status === '未完成');
+                document.getElementById(`com-${id}`).classList.toggle('active-com', scores[id].status === '已完成');
+                if(scores[id].comment) document.getElementById(`msg-${id}`).style.display = 'block';
             }, 50);
         });
-
-        document.getElementById('studentName').addEventListener('input', e => {
-            document.getElementById('sumName').innerText = e.target.value || '-';
-            autoLocalSave();
-        });
-        document.getElementById('courseName').addEventListener('input', autoLocalSave);
-        renderSummary();
-    }
-
-    function toggleMsg(id) {
-        const el = document.getElementById(`msg-${id}`);
-        el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+        updateProgressBar();
     }
 
     function updateStatus(id, status) {
         scores[id].status = status;
-        applyStatusUI(id, status);
-        renderSummary();
-        autoLocalSave();
-    }
-
-    function applyStatusUI(id, status) {
         document.getElementById(`inc-${id}`).classList.toggle('active-inc', status === '未完成');
         document.getElementById(`com-${id}`).classList.toggle('active-com', status === '已完成');
+        updateProgressBar();
+        saveLocal();
+    }
+
+    function toggleMsg(id) {
+        const el = document.getElementById(`msg-${id}`);
+        el.style.display = el.style.display === 'block' ? 'none' : 'block';
     }
 
     function updateComment(id) {
         scores[id].comment = document.getElementById(`msg-${id}`).value;
-        document.getElementById(`tog-${id}`).classList.toggle('has-comment', scores[id].comment.length > 0);
-        autoLocalSave();
+        saveLocal();
     }
 
-    function renderSummary() {
+    function updateProgressBar() {
         const done = Object.values(scores).filter(s => s.status === '已完成').length;
-        document.getElementById('sumProgress').innerText = `${done} / 10`;
         document.getElementById('mainProgressBar').style.width = (done * 10) + '%';
+        document.getElementById('sumProgress').innerText = `${done} / 10`;
     }
 
-    function autoLocalSave() {
-        const payload = {
+    function saveLocal() {
+        localStorage.setItem('elite_salon_data', JSON.stringify({
             name: document.getElementById('studentName').value,
             course: document.getElementById('courseName').value,
             data: scores
-        };
-        localStorage.setItem('elite_salon_data', JSON.stringify(payload));
+        }));
     }
 
     function saveToFirebase() {
         const name = document.getElementById('studentName').value;
-        if (!name) return alert("請輸入學員姓名後再進行雲端同步");
-        
+        if(!name) return alert("請輸入學員姓名以利存檔");
         db.ref('students/' + name).set({
             name: name,
             course: document.getElementById('courseName').value,
             data: scores,
             time: new Date().toLocaleString()
-        }).then(() => alert("✨ 奢華成就已成功同步至雲端系統 ✨"));
+        }).then(() => alert("✨ 雲端同步完成 ✨"));
     }
 
-    function resetForm() {
-        if(confirm("確定要清除本機所有進度嗎？此動作不可撤回。")) {
-            localStorage.removeItem('elite_salon_data');
-            location.reload();
-        }
+    // --- 導師讀取邏輯 ---
+    function fetchMentorData() {
+        const listDiv = document.getElementById('mentorList');
+        listDiv.innerHTML = "同步數據中...";
+        db.ref('students').once('value', (snapshot) => {
+            listDiv.innerHTML = "";
+            const data = snapshot.val();
+            if(!data) { listDiv.innerHTML = "尚無學員數據"; return; }
+            
+            for(let key in data) {
+                const s = data[key];
+                const doneCount = Object.values(s.data).filter(v => v.status === '已完成').length;
+                let commentItems = "";
+                for(let id in s.data) {
+                    if(s.data[id].comment) {
+                        commentItems += `<div><span class="q-tag">Q${id}:</span>${s.data[id].comment}</div>`;
+                    }
+                }
+
+                listDiv.innerHTML += `
+                    <div class="student-list-card">
+                        <div class="student-header">
+                            <span class="student-name">${s.name}</span>
+                            <span class="course-tag">${s.course || '一般課程'}</span>
+                        </div>
+                        <div class="progress-bg"><div class="progress-fill" style="width:${doneCount*10}%"></div></div>
+                        <div class="task-dots">
+                            ${Object.values(s.data).map(v => `<div class="dot ${v.status === '已完成' ? 'done' : ''}"></div>`).join('')}
+                        </div>
+                        ${commentItems ? `<div class="mentor-comments">${commentItems}</div>` : ''}
+                    </div>
+                `;
+            }
+        });
     }
 
-    window.onload = init;
+    window.onload = initStudent;
 </script>
 </body>
 </html>
