@@ -130,15 +130,28 @@
 
 <script>
     // --- 請填入你的 Firebase 配置 ---
-    const firebaseConfig = {
-        apiKey: "你的API_KEY",
-        authDomain: "你的專案ID.firebaseapp.com",
-        databaseURL: "https://你的專案ID-default-rtdb.firebaseio.com",
-        projectId: "你的專案ID",
-        storageBucket: "你的專案ID.appspot.com",
-        messagingSenderId: "你的傳送ID",
-        appId: "你的APP_ID"
-    };
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyCOhBN9TH3UJSOSx5XVyQ08f_2RUckvXYU",
+  authDomain: "holyhairsalon-f73bf.firebaseapp.com",
+  databaseURL: "https://holyhairsalon-f73bf-default-rtdb.firebaseio.com",
+  projectId: "holyhairsalon-f73bf",
+  storageBucket: "holyhairsalon-f73bf.firebasestorage.app",
+  messagingSenderId: "960169055224",
+  appId: "1:960169055224:web:48af64a6cf215650bf3c0d",
+  measurementId: "G-QGWQVMD6C6"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
     
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
@@ -213,3 +226,4 @@
 </script>
 </body>
 </html>
+
